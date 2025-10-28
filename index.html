@@ -790,6 +790,64 @@
         </section>
     </div>
 
+    <div id="guidePage" class="page">
+        <section class="container">
+            <h2 class="section-title">Ratgeber: Leben & Sparen in Österreich</h2>
+
+            <!-- Günstig Kochen & Essen -->
+            <div class="app-card">
+                <h3 class="app-name">Günstig Kochen & Essen</h3>
+                <p class="app-description">Spar-Rezepte und Reste-Küche mit Fokus auf österreichische Blogs und Initiativen.</p>
+                <ul style="list-style: disc; margin-left: 1.5rem; color: var(--text-light);">
+                    <li><a href="https://guenstig-kochen.at/" target="_blank" class="app-link">GÜNSTIG KOCHEN mit Franz</a> (Österreichischer Foodblog)</li>
+                    <li><a href="https://www.ichkoche.at/restl-essen/" target="_blank" class="app-link">ichkoche.at - Restl-Essen</a></li>
+                    <li><a href="https://www.bmluk.gv.at/themen/lebensmittel/lebensmittelverschwendung/restl-rezepte.html" target="_blank" class="app-link">BMLUK - Restl-Rezepte</a> (Österreichisches Ministerium)</li>
+                </ul>
+            </div>
+
+            <!-- Reparieren & Selbermachen (DIY) -->
+            <div class="app-card" style="margin-top: 1.5rem;">
+                <h3 class="app-name">Reparieren & Selbermachen (DIY)</h3>
+                <p class="app-description">Anlaufstellen und Anleitungen für Repair Cafés und Upcycling.</p>
+                <ul style="list-style: disc; margin-left: 1.5rem; color: var(--text-light);">
+                    <li><a href="https://www.umweltberatung.at/repaircafes" target="_blank" class="app-link">Umweltberatung.at - Repair Cafés</a> (Liste österreichischer Cafés)</li>
+                    <li><a href="https://reuseaustria.at/repaircafes-und-initiativen/" target="_blank" class="app-link">Reuse Austria - Repair Cafés</a></li>
+                    <li><a href="https://greenpeace.at/ratgeber/upcycling-von-kleidung/" target="_blank" class="app-link">Greenpeace.at - Upcycling von Kleidung</a></li>
+                </ul>
+            </div>
+            
+            <!-- Selbstversorgung & Garten -->
+            <div class="app-card" style="margin-top: 1.5rem;">
+                <h3 class="app-name">Selbstversorgung & Garten</h3>
+                <p class="app-description">Tipps zum Anbau von Gemüse und Kräutern auf Balkon und im Garten.</p>
+                <ul style="list-style: disc; margin-left: 1.5rem; color: var(--text-light);">
+                    <li><a href="https://www.umweltberatung.at/gartentipps" target="_blank" class="app-link">Die Umweltberatung - Gartentipps</a></li>
+                    <li><a href="https://www.loewenzahn.at/magazin/balkongarten-anlegen/" target="_blank" class="app-link">Löwenzahn.at - Balkongarten anlegen</a></li>
+                </ul>
+            </div>
+
+            <!-- Haushalt & Energie sparen -->
+            <div class="app-card" style="margin-top: 1.5rem;">
+                <h3 class="app-name">Haushalt & Energie sparen</h3>
+                <p class="app-description">Offizielle und verlässliche Energiespartipps für österreichische Haushalte.</p>
+                <ul style="list-style: disc; margin-left: 1.5rem; color: var(--text-light);">
+                    <li><a href="https://www.e-control.at/energiespartipps-und-energieberatung" target="_blank" class="app-link">E-Control - Energiespartipps</a></li>
+                    <li><a href="https://www.wwf.at/artikel/im-haushalt-weniger-energie-verbrauchen/" target="_blank" class="app-link">WWF.at - Energie sparen</a></li>
+                </ul>
+            </div>
+
+            <!-- Nachbarschaft & Urbanes Leben -->
+            <div class="app-card" style="margin-top: 1.5rem;">
+                <h3 class="app-name">Nachbarschaft & Urbanes Leben</h3>
+                <p class="app-description">Lokale Initiativen zur Gestaltung des Wohnumfelds und klimafitten Grätzeln.</p>
+                <ul style="list-style: disc; margin-left: 1.5rem; color: var(--text-light);">
+                    <li><a href="https://www.gbstern.at/" target="_blank" class="app-link">GB* Stadterneuerung</a> (Service der Stadt Wien)</li>
+                </ul>
+            </div>
+
+        </section>
+    </div>
+
     <div id="communityPage" class="page">
         <section class="container">
             <h2 class="section-title">Community & Netzwerk</h2>
@@ -888,10 +946,14 @@
         <button class="nav-item" onclick="switchPage('aboutPage')">
             <span>Über uns</span>
         </button>
-        <button class="nav-item active" onclick="switchPage('homePage')">
+        <button class="nav-item" onclick="switchPage('homePage')">
             <span>Start</span>
         </button>
-        <button class="nav-item" onclick="switchPage('communityPage')">
+        <button class="nav-item" onclick="switchPage('guidePage')">
+                <span class="nav-icon">💡</span>
+                Ratgeber
+            </button>
+            <button class="nav-item" onclick="switchPage('communityPage')">
             <span>Community</span>
         </button>
     </nav>
