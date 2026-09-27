@@ -1,1245 +1,322 @@
 <!DOCTYPE html>
-<html lang="de">
-
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Circle of Help</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #2563eb;
-            --primary-dark: #1e40af;
-            --secondary: #10b981;
-            --background: #f0f4f8;
-            --surface: #ffffff;
-            --text: #1e293b;
-            --text-light: #64748b;
-            --border: #e2e8f0;
-            --shadow: rgba(0, 0, 0, 0.08);
-            --success: #10b981;
-            --warning: #f59e0b;
-            --error: #ef4444;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: var(--background);
-            color: var(--text);
-            line-height: 1.6;
-        }
-
-        /* Header */
-        header {
-            background: var(--surface);
-            box-shadow: 0 2px 8px var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .logo {
-            width: 48px;
-            height: 48px;
-            position: relative;
-        }
-
-        .circle {
-            position: absolute;
-            border-radius: 50%;
-            border: 3px solid;
-        }
-
-        .circle-1 {
-            width: 48px;
-            height: 48px;
-            border-color: var(--primary);
-            animation: pulse 3s ease-in-out infinite;
-        }
-
-        .circle-2 {
-            width: 36px;
-            height: 36px;
-            border-color: var(--secondary);
-            top: 6px;
-            left: 6px;
-            animation: pulse 3s ease-in-out infinite 0.5s;
-        }
-
-        .circle-3 {
-            width: 24px;
-            height: 24px;
-            border-color: var(--primary);
-            top: 12px;
-            left: 12px;
-            animation: pulse 3s ease-in-out infinite 1s;
-        }
-
-        @keyframes pulse {
-
-            0%,
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-
-            50% {
-                transform: scale(1.05);
-                opacity: 0.8;
-            }
-        }
-
-        .logo-text {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .nav-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text);
-            padding: 0.5rem;
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            padding: 3rem 1rem;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            font-weight: 700;
-        }
-
-        .hero p {
-            font-size: 1.1rem;
-            opacity: 0.95;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* Search Section */
-        .search-section {
-            max-width: 1200px;
-            margin: -2rem auto 2rem;
-            padding: 0 1rem;
-        }
-
-        .search-container {
-            background: var(--surface);
-            border-radius: 16px;
-            box-shadow: 0 4px 16px var(--shadow);
-            padding: 1.5rem;
-        }
-
-        .search-box {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .search-input {
-            flex: 1;
-            padding: 0.875rem 1rem;
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .btn {
-            padding: 0.875rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-1px);
-        }
-
-        .btn-secondary {
-            background: var(--secondary);
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background: #0da271;
-            transform: translateY(-1px);
-        }
-
-        /* Filter Chips Container - Updated for touch scrolling */
-        .filters-container {
-            overflow-x: auto;
-            overflow-y: hidden;
-            position: relative;
-            width: 100%;
-            -webkit-overflow-scrolling: touch;
-            /* Smooth scrolling on iOS */
-            scrollbar-width: none;
-            /* Hide scrollbar for Firefox */
-            -ms-overflow-style: none;
-            /* Hide scrollbar for IE/Edge */
-        }
-
-        .filters-container::-webkit-scrollbar {
-            display: none;
-            /* Hide scrollbar for Chrome/Safari */
-        }
-
-        .filters {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: nowrap;
-            padding-bottom: 0.5rem;
-            /* Space for scroll indication */
-            width: max-content;
-            /* Allow horizontal expansion */
-        }
-
-        .filter-chip {
-            padding: 0.5rem 1rem;
-            border: 2px solid var(--border);
-            border-radius: 20px;
-            background: var(--surface);
-            cursor: pointer;
-            font-size: 0.875rem;
-            transition: all 0.3s;
-            white-space: nowrap;
-            flex-shrink: 0;
-            user-select: none;
-        }
-
-        .filter-chip:hover {
-            border-color: var(--primary);
-        }
-
-        .filter-chip.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        /* Scroll hint for mobile */
-        .filters-container::after {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            width: 30px;
-            background: linear-gradient(to right, transparent, var(--surface));
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .filters-container.scrollable::after {
-            opacity: 1;
-        }
-
-        /* Main Content */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            color: var(--text);
-        }
-
-        /* App Grid */
-        .app-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-
-        .app-card {
-            background: var(--surface);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 8px var(--shadow);
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .app-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 16px var(--shadow);
-        }
-
-        .app-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 1rem;
-        }
-
-        .app-name {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--text);
-            margin-bottom: 0.25rem;
-        }
-
-        .app-category {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            background: var(--background);
-            border-radius: 12px;
-            font-size: 0.75rem;
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .app-description {
-            color: var(--text-light);
-            font-size: 0.9rem;
-            line-height: 1.5;
-            margin-bottom: 1rem;
-        }
-
-        .app-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .app-link {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        /* Forum Styles */
-        .forum-container {
-            display: grid;
-            grid-template-columns: 1fr 300px;
-            gap: 2rem;
-        }
-
-        .forum-posts {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .forum-post {
-            background: var(--surface);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 8px var(--shadow);
-        }
-
-        .post-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-        }
-
-        .post-author {
-            font-weight: 600;
-            color: var(--text);
-        }
-
-        .post-date {
-            color: var(--text-light);
-            font-size: 0.875rem;
-        }
-
-        .post-title {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--text);
-        }
-
-        .post-content {
-            color: var(--text-light);
-            line-height: 1.6;
-            margin-bottom: 1rem;
-        }
-
-        .post-actions {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .post-action {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-            color: var(--text-light);
-            font-size: 0.875rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .post-action:hover {
-            color: var(--primary);
-        }
-
-        .forum-sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .sidebar-card {
-            background: var(--surface);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 8px var(--shadow);
-        }
-
-        .sidebar-title {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--text);
-        }
-
-        .topic-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .topic-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 0;
-            color: var(--text-light);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .topic-item:hover {
-            color: var(--primary);
-        }
-
-        .topic-icon {
-            font-size: 1.25rem;
-        }
-
-        .new-post-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .form-label {
-            font-weight: 600;
-            color: var(--text);
-        }
-
-        .form-input,
-        .form-textarea {
-            padding: 0.75rem;
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-
-        .form-input:focus,
-        .form-textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .form-textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        /* Stats */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: var(--surface);
-            padding: 1.5rem;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 2px 8px var(--shadow);
-        }
-
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .stat-label {
-            color: var(--text-light);
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-        }
-
-        .page {
-            display: none;
-        }
-
-        .page.active {
-            display: block;
-        }
-
-        /* Bottom Navigation - Updated for better visibility */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: var(--surface);
-            box-shadow: 0 -4px 16px var(--shadow);
-            display: flex;
-            justify-content: space-around;
-            padding: 1rem 0;
-            z-index: 100;
-            border-top: 2px solid var(--border);
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            padding: 0.5rem 1rem;
-            color: var(--text-light);
-            transition: all 0.3s;
-            border: none;
-            background: none;
-            font-size: 0.85rem;
-            font-weight: 600;
-            border-radius: 8px;
-            min-width: 70px;
-        }
-
-        .nav-item:hover {
-            background: var(--background);
-            color: var(--primary);
-        }
-
-        .nav-item.active {
-            color: var(--primary);
-            background: var(--background);
-        }
-
-        .nav-icon {
-            font-size: 1.5rem;
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: var(--surface);
-            border-radius: 16px;
-            max-width: 600px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            padding: 2rem;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 1.5rem;
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text-light);
-        }
-
-        .modal-body h3 {
-            margin-top: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: var(--text);
-        }
-
-        .modal-body p {
-            color: var(--text-light);
-            line-height: 1.6;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .forum-container {
-                grid-template-columns: 1fr;
-            }
-
-            .forum-sidebar {
-                order: -1;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .hero h1 {
-                font-size: 1.5rem;
-            }
-
-            .app-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .container {
-                padding-bottom: 6rem;
-            }
-
-            .bottom-nav {
-                padding: 1.25rem 0;
-            }
-
-            .nav-item {
-                font-size: 0.8rem;
-                padding: 0.75rem 0.5rem;
-            }
-
-            /* Better touch scrolling on mobile */
-            .filters-container {
-                -webkit-overflow-scrolling: touch;
-                scroll-behavior: smooth;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0a0a">
+<title>Somera_Studio — ABSURD PAGES</title>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --fg: #f2f2f2;
+    --dim: #6b6b6b;
+    --accent: #ffffff;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overscroll-behavior: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  /* subtle vignette / grain feel */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(0,0,0,0.55) 100%);
+  }
+
+  header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 18px 20px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    z-index: 5;
+  }
+
+  .brand {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--fg);
+  }
+
+  .brand .underscore {
+    color: var(--dim);
+    animation: blink 1.15s steps(1) infinite;
+  }
+
+  @keyframes blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+
+  .sub {
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    color: var(--dim);
+    text-transform: uppercase;
+  }
+
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    z-index: 2;
+  }
+
+  #surprise {
+    position: relative;
+    appearance: none;
+    border: 1.5px solid rgba(255,255,255,0.85);
+    background: transparent;
+    color: var(--fg);
+    font-family: inherit;
+    font-size: clamp(17px, 5.2vw, 22px);
+    letter-spacing: 0.06em;
+    padding: 22px 42px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform 0.12s ease, background 0.18s ease, color 0.18s ease, box-shadow 0.25s ease;
+    box-shadow: 0 0 0 rgba(255,255,255,0);
+    overflow: hidden;
+  }
+
+  #surprise:active {
+    transform: scale(0.94);
+    background: rgba(255,255,255,0.08);
+  }
+
+  @media (hover: hover) {
+    #surprise:hover {
+      background: #fff;
+      color: #0a0a0a;
+      box-shadow: 0 0 40px rgba(255,255,255,0.25);
+    }
+  }
+
+  #surprise.loading {
+    pointer-events: none;
+    opacity: 0.55;
+    animation: pulse 0.5s ease infinite alternate;
+  }
+
+  @keyframes pulse {
+    from { transform: scale(1); }
+    to   { transform: scale(0.96); }
+  }
+
+  footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 16px 20px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    color: var(--dim);
+    text-transform: uppercase;
+    z-index: 5;
+  }
+
+  #counter {
+    opacity: 0.7;
+  }
+
+  /* little pop of the last chosen title */
+  #toast {
+    position: absolute;
+    left: 50%;
+    bottom: 64px;
+    transform: translate(-50%, 12px);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--dim);
+    opacity: 0;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    text-align: center;
+    max-width: 80vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    pointer-events: none;
+  }
+
+  #toast.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  /* flash on selection */
+  .flash {
+    animation: flash 0.35s ease;
+  }
+
+  @keyframes flash {
+    0%   { background: #0a0a0a; }
+    20%  { background: #1a1a1a; }
+    100% { background: #0a0a0a; }
+  }
+</style>
 </head>
-
 <body>
-    <header>
-        <div class="header-content">
-            <div class="logo-container">
-                <div class="logo">
-                    <div class="circle circle-1"></div>
-                    <div class="circle circle-2"></div>
-                    <div class="circle circle-3"></div>
-                </div>
-                <div class="logo-text">The Circle of Help</div>
-            </div>
-            <button class="nav-btn" onclick="switchPage('aboutPage')"
-                style="font-size: 0.9rem; font-weight: 400; color: var(--primary);">Über uns</button>
-        </div>
-    </header>
 
-    <div id="homePage" class="page active">
-        <section class="hero">
-            <h1>Gemeinsam Gutes tun</h1>
-            <p>Entdecke Apps und Projekte, die das Gemeinwohl fördern. Von Umweltschutz bis sozialem Engagement – finde
-                deine Möglichkeit zu helfen.</p>
-        </section>
+  <header>
+    <span class="brand">Somera<span class="underscore">_</span>Studio</span>
+    <span class="sub">Absurd Pages</span>
+  </header>
 
-        <section class="search-section">
-            <div class="search-container">
-                <div class="search-box">
-                    <input type="text" class="search-input" id="searchInput"
-                        placeholder="Apps, Projekte oder Themen suchen...">
-                    <button class="btn btn-primary" onclick="searchApps()">Suchen</button>
-                </div>
-                <div class="filters-container" id="filtersContainer">
-                    <div class="filters" id="filterContainer">
-                        <div class="filter-chip active" data-category="alle" onclick="filterApps('alle')">Alle</div>
-                        <div class="filter-chip" data-category="umwelt" onclick="filterApps('umwelt')">Umweltschutz
-                        </div>
-                        <div class="filter-chip" data-category="sozial" onclick="filterApps('sozial')">Soziales</div>
-                        <div class="filter-chip" data-category="bildung" onclick="filterApps('bildung')">Bildung</div>
-                        <div class="filter-chip" data-category="gesundheit" onclick="filterApps('gesundheit')">
-                            Gesundheit
-                        </div>
-                        <div class="filter-chip" data-category="tiere" onclick="filterApps('tiere')">Tierschutz</div>
-                        <div class="filter-chip" data-category="crowd" onclick="filterApps('crowd')">Crowdsourcing</div>
-                        <div class="filter-chip" data-category="spenden" onclick="filterApps('spenden')">Spenden</div>
-                    </div>
-                </div>
-            </div>
-        </section>
+  <main>
+    <button id="surprise" aria-label="Open a random absurd page">Suprise me!</button>
+  </main>
 
-        <section class="container">
-            <div class="stats">
-                <div class="stat-card">
-                    <div class="stat-number" id="appCount">80+</div>
-                    <div class="stat-label">Apps & Projekte</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">8</div>
-                    <div class="stat-label">Kategorien</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">24</div>
-                    <div class="stat-label">Community-Beiträge</div>
-                </div>
-            </div>
+  <div id="toast"></div>
 
-            <h2 class="section-title">Entdecke Projekte</h2>
-            <div class="app-grid" id="appGrid"></div>
-        </section>
-    </div>
+  <footer>
+    <span id="counter">0 / 43</span>
+    <span>tap at your own risk</span>
+  </footer>
 
-    <div id="aboutPage" class="page">
-        <section class="container">
-            <h2 class="section-title">Über The Circle of Help</h2>
-            <div class="app-card">
-                <h3>Unsere Mission</h3>
-                <p class="app-description">
-                    The Circle of Help ist eine kuratierte Plattform, die Apps und Projekte bündelt, die das Gemeinwohl
-                    fördern.
-                    Wir machen es einfach, Möglichkeiten zu finden, sich zu engagieren – ob durch Freiwilligenarbeit,
-                    nachhaltiges Handeln oder Spenden.
-                </p>
-            </div>
-            <div class="app-card">
-                <h3>Warum wir das tun</h3>
-                <p class="app-description">
-                    Die Landschaft gemeinnütziger Apps ist fragmentiert. Wir wollen die Auffindbarkeit erhöhen,
-                    die Vernetzung stärken und es jedem ermöglichen, einen positiven Beitrag zu leisten.
-                </p>
-            </div>
-            <div class="app-card">
-                <h3>Unser Team</h3>
-                <p class="app-description">
-                    <strong>Somera</strong> – CEO & Gründer<br>
-                    Mit Leidenschaft für soziale Innovation und dem Ziel, Gutes tun so einfach wie möglich zu machen.
-                </p>
-                <p class="app-description" style="margin-top: 1rem;">
-                    <strong>Zdarsky</strong> – Visionär & Mitbegründer<br>
-                    Treibende Kraft hinter der Vision, eine bessere und vernetztere Welt des Gemeinwohls zu schaffen.
-                </p>
-            </div>
-        </section>
-    </div>
+<script>
+  const PAGES = [
+    { t: "Digital Trip",              u: "https://htdt.github.io/digital_trip/" },
+    { t: "Harmonics",                 u: "https://musiclab.chromeexperiments.com/Harmonics/" },
+    { t: "Kim Jong Il Looking At Things", u: "https://kimjongillookingatthings.tumblr.com/" },
+    { t: "Choir",                     u: "https://www.adultswim.com/etcetera/choir" },
+    { t: "Elastic Man",               u: "https://www.adultswim.com/etcetera/elastic-man" },
+    { t: "Quick, Draw!",              u: "https://quickdraw.withgoogle.com/" },
+    { t: "Absurd Trolley Problems",   u: "https://neal.fun/absurd-trolley-problems/" },
+    { t: "100,000 Stars",             u: "https://stars.chromeexperiments.com/" },
+    { t: "Pale Blue",                 u: "https://paleblue.news/?shem=aimgspe" },
+    { t: "Shape Reaction",            u: "https://retryables.com/shape-reaction/?shem=aimgspe" },
+    { t: "Pug in a Rug",              u: "https://puginarug.com/?shem=aimgspe" },
+    { t: "Perfect Circle",            u: "https://neal.fun/perfect-circle/?shem=aimgspe" },
+    { t: "Sleep Animal",              u: "https://vole.wtf/sleep-animal/?shem=aimgspe" },
+    { t: "Bouncy Balls",              u: "https://bouncyballs.org/?shem=aimgspe" },
+    { t: "Rotating Sandwiches",       u: "https://rotatingsandwiches.com/?shem=aimgspe" },
+    { t: "Cat Trap",                  u: "https://llerrah.com/cattrap.htm?shem=aimgspe" },
+    { t: "Broken Self",               u: "https://www.brokenself.com/?shem=aimgspe" },
+    { t: "Spectrogram",               u: "https://musiclab.chromeexperiments.com/Spectrogram/?shem=aimgspe" },
+    { t: "InspiroBot",                u: "https://inspirobot.me/?shem=aimgspe" },
+    { t: "Zoomquilt 2",               u: "https://zoomquilt2.com/?shem=aimgspe" },
+    { t: "Rainy Mood",                u: "https://www.rainymood.com/?shem=aimgspe" },
+    { t: "Blank Windows",             u: "https://blankwindows.com/?shem=aimgspe" },
+    { t: "2020 Game",                 u: "https://2020game.io/?shem=aimgspe" },
+    { t: "Virtual Drumming",          u: "https://www.virtualdrumming.com/drums/drums-app-game-android-ios/drums-app-game-android-ios.html?shem=aimgspe" },
+    { t: "PlayPhrase",                u: "https://www.playphrase.me/?shem=aimgspe#/search?q=Nice+to+meet+you.&pos=2&language=en" },
+    { t: "Guess the Price",           u: "https://guesstheprice.net/" },
+    { t: "Helen Keller Simulator",    u: "https://helenkellersimulator.org/?shem=aimgspe" },
+    { t: "Bongo Cat",                 u: "https://bongo.cat/?shem=aimgspe" },
+    { t: "Keys",                      u: "https://keys.playables.net/?shem=aimgspe" },
+    { t: "Big Long Now",              u: "https://www.biglongnow.com/?shem=aimgspe" },
+    { t: "Shit Day",                  u: "https://shitday.de/?shem=aimgspe" },
+    { t: "The True Size Of",          u: "https://thetruesize.com/?shem=aimgspe#?borders=1~!MTYyNzAxNDA.MTUzMDc0Mg*MjYyOTI0MzY(MTMxMDg4NDI~!CONTIGUOUS_US*MTAwMjQwNzU.MjUwMjM1MTc(MTc1)MQ~!IN*NTI2NDA1MQ.Nzg2MzQyMQ)Mg~!CN*OTkyMTY5Nw.NzMxNDcwNQ(MjI1)Mw" },
+    { t: "Random Colour",             u: "https://randomcolour.com/" },
+    { t: "Iceberger",                 u: "https://joshdata.me/iceberger.html" },
+    { t: "Eutow",                     u: "https://demo.marpi.pl/archan/eutow/" },
+    { t: "White Trash",               u: "https://whitetrash.nl/" },
+    { t: "Trip to Mars",              u: "https://absurd.website/trip-to-mars/" },
+    { t: "Tree.fm",                   u: "https://tree.fm/forest/40" },
+    { t: "Nate Judge",                u: "https://www.natejudge.com/" },
+    { t: "Arpeggios",                 u: "https://musiclab.chromeexperiments.com/Arpeggios/" },
+    { t: "Yes No If",                 u: "https://yesnoif.com/" },
+    { t: "7 Billion World",           u: "https://www.7billionworld.com/" },
+    { t: "Self-Contained Glyphs",     u: "https://www.madsci.org/cgi-bin/lynn/jardin/SCG" }
+  ];
 
-    <div id="guidePage" class="page">
-        <section class="container">
-            <h2 class="section-title">Ratgeber: Leben & Sparen in Österreich</h2>
+  const btn     = document.getElementById('surprise');
+  const toast   = document.getElementById('toast');
+  const counter = document.getElementById('counter');
 
-            <!-- Günstig Kochen & Essen -->
-            <div class="app-card">
-                <h3 class="app-name">Günstig Kochen & Essen</h3>
-                <p class="app-description">Spar-Rezepte und Reste-Küche mit Fokus auf österreichische Blogs und Initiativen.</p>
-                <ul style="list-style: disc; margin-left: 1.5rem; color: var(--text-light);">
-                    <li><a href="https://guenstig-kochen.at/" target="_blank" class="app-link">GÜNSTIG KOCHEN mit Franz</a> (Österreichischer Foodblog)</li>
-                    <li><a href="https://www.ichkoche.at/restl-essen/" target="_blank" class="app-link">ichkoche.at - Restl-Essen</a></li>
-                    <li><a href="https://www.bmluk.gv.at/themen/lebensmittel/lebensmittelverschwendung/restl-rezepte.html" target="_blank" class="app-link">BMLUK - Restl-Rezepte</a> (Österreichisches Ministerium)</li>
-                </ul>
-            </div>
+  const seen = new Set();
 
-            <!-- Reparieren & Selbermachen (DIY) -->
-            <div class="app-card" style="margin-top: 1.5rem;">
-                <h3 class="app-name">Reparieren & Selbermachen (DIY)</h3>
-                <p class="app-description">Anlaufstellen und Anleitungen für Repair Cafés und Upcycling.</p>
-                <ul style="list-style: disc; margin-left: 1.5rem; color: var(--text-light);">
-                    <li><a href="https://www.umweltberatung.at/repaircafes" target="_blank" class="app-link">Umweltberatung.at - Repair Cafés</a> (Liste österreichischer Cafés)</li>
-                    <li><a href="https://reuseaustria.at/repaircafes-und-initiativen/" target="_blank" class="app-link">Reuse Austria - Repair Cafés</a></li>
-                    <li><a href="https://greenpeace.at/ratgeber/upcycling-von-kleidung/" target="_blank" class="app-link">Greenpeace.at - Upcycling von Kleidung</a></li>
-                </ul>
-            </div>
-            
-            <!-- Selbstversorgung & Garten -->
-            <div class="app-card" style="margin-top: 1.5rem;">
-                <h3 class="app-name">Selbstversorgung & Garten</h3>
-                <p class="app-description">Tipps zum Anbau von Gemüse und Kräutern auf Balkon und im Garten.</p>
-                <ul style="list-style: disc; margin-left: 1.5rem; color: var(--text-light);">
-                    <li><a href="https://www.umweltberatung.at/gartentipps" target="_blank" class="app-link">Die Umweltberatung - Gartentipps</a></li>
-                    <li><a href="https://www.loewenzahn.at/magazin/balkongarten-anlegen/" target="_blank" class="app-link">Löwenzahn.at - Balkongarten anlegen</a></li>
-                </ul>
-            </div>
+  function updateCounter() {
+    counter.textContent = seen.size + " / " + PAGES.length;
+  }
 
-            <!-- Haushalt & Energie sparen -->
-            <div class="app-card" style="margin-top: 1.5rem;">
-                <h3 class="app-name">Haushalt & Energie sparen</h3>
-                <p class="app-description">Offizielle und verlässliche Energiespartipps für österreichische Haushalte.</p>
-                <ul style="list-style: disc; margin-left: 1.5rem; color: var(--text-light);">
-                    <li><a href="https://www.e-control.at/energiespartipps-und-energieberatung" target="_blank" class="app-link">E-Control - Energiespartipps</a></li>
-                    <li><a href="https://www.wwf.at/artikel/im-haushalt-weniger-energie-verbrauchen/" target="_blank" class="app-link">WWF.at - Energie sparen</a></li>
-                </ul>
-            </div>
+  function showToast(text) {
+    toast.textContent = text;
+    toast.classList.add('show');
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => toast.classList.remove('show'), 1600);
+  }
 
-            <!-- Nachbarschaft & Urbanes Leben -->
-            <div class="app-card" style="margin-top: 1.5rem;">
-                <h3 class="app-name">Nachbarschaft & Urbanes Leben</h3>
-                <p class="app-description">Lokale Initiativen zur Gestaltung des Wohnumfelds und klimafitten Grätzeln.</p>
-                <ul style="list-style: disc; margin-left: 1.5rem; color: var(--text-light);">
-                    <li><a href="https://www.gbstern.at/" target="_blank" class="app-link">GB* Stadterneuerung</a> (Service der Stadt Wien)</li>
-                </ul>
-            </div>
+  function pickIndex() {
+    // avoid immediate repeats, and prefer unseen pages
+    const unseen = PAGES.map((_, i) => i).filter(i => !seen.has(i));
 
-        </section>
-    </div>
+    if (unseen.length > 0) {
+      return unseen[Math.floor(Math.random() * unseen.length)];
+    }
 
-    <div id="communityPage" class="page">
-        <section class="container">
-            <h2 class="section-title">Community & Netzwerk</h2>
+    // all seen → reset memory, pick anything
+    seen.clear();
+    return Math.floor(Math.random() * PAGES.length);
+  }
 
-            <div class="forum-container">
-                <div class="forum-posts" id="forumPosts">
-                    <!-- Real community resources will be added here -->
-                </div>
+  function openUrl(url) {
+    // Anchor-based open is the most reliable on mobile (survives popup blockers)
+    const a = document.createElement('a');
+    a.href = url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
 
-                <div class="forum-sidebar">
-                    <div class="sidebar-card">
-                        <h3 class="sidebar-title">Österreichische Plattformen</h3>
-                        <div class="topic-list">
-                            <a href="https://www.nachbarschaft.net/" class="topic-item" target="_blank">
-                                <span>Nachbarschaftsnetzwerke</span>
-                            </a>
-                            <a href="https://www.willhaben.at" class="topic-item" target="_blank">
-                                <span>Willhaben Tauschbörse</span>
-                            </a>
-                            <a href="https://www.umweltberatung.at" class="topic-item" target="_blank">
-                                <span>Umweltberatung Österreich</span>
-                            </a>
-                        </div>
-                    </div>
+  btn.addEventListener('click', () => {
+    const i = pickIndex();
+    const page = PAGES[i];
 
-                    <div class="sidebar-card">
-                        <h3 class="sidebar-title">Hilfsorganisationen AT</h3>
-                        <div class="topic-list">
-                            <a href="https://www.roteskreuz.at" class="topic-item" target="_blank">
-                                <span>Rotes Kreuz Österreich</span>
-                            </a>
-                            <a href="https://www.volkshilfe.at" class="topic-item" target="_blank">
-                                <span>Volkshilfe Österreich</span>
-                            </a>
-                            <a href="https://www.diakonie.at" class="topic-item" target="_blank">
-                                <span>Diakonie Österreich</span>
-                            </a>
-                            <a href="https://www.nachbarinnen.at" class="topic-item" target="_blank">
-                                <span>Nachbarinnen in Wien</span>
-                            </a>
-                        </div>
-                    </div>
+    seen.add(i);
+    updateCounter();
+    showToast("→ " + page.t);
 
-                    <div class="sidebar-card">
-                        <h3 class="sidebar-title">Soziale Märkte & Tausch</h3>
-                        <div class="topic-list">
-                            <a href="https://www.carla.at" class="topic-item" target="_blank">
-                                <span>CARLA Second Hand</span>
-                            </a>
-                            <a href="https://www.sozialmarkt.at" class="topic-item" target="_blank">
-                                <span>Sozialmärkte Österreich</span>
-                            </a>
-                            <a href="https://www.foodsharing.at" class="topic-item" target="_blank">
-                                <span>Foodsharing Österreich</span>
-                            </a>
-                            <a href="https://www.repanet.at" class="topic-item" target="_blank">
-                                <span>Reparatur Netzwerk</span>
-                            </a>
-                        </div>
-                    </div>
+    btn.classList.add('loading');
+    document.body.classList.add('flash');
 
-                    <div class="sidebar-card">
-                        <h3 class="sidebar-title">Regionale Initiativen</h3>
-                        <div class="topic-list">
-                            <a href="https://www.wien.gv.at/umweltschutz/umweltforum.html" class="topic-item"
-                                target="_blank">
-                                <span>Umweltforum Wien</span>
-                            </a>
-                            <a href="https://www.linz.at/umwelt/" class="topic-item" target="_blank">
-                                <span>Linz Umwelt</span>
-                            </a>
-                            <a href="https://www.salzburg.gv.at/umwelt" class="topic-item" target="_blank">
-                                <span>Salzburg Umwelt</span>
-                            </a>
-                            <a href="https://www.tirol.gv.at/umwelt/" class="topic-item" target="_blank">
-                                <span>Tirol Umwelt</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
+    // tiny delay so the toast/flash registers before leaving the page
+    setTimeout(() => {
+      openUrl(page.u);
+      btn.classList.remove('loading');
+      document.body.classList.remove('flash');
+    }, 260);
+  });
 
-    <div class="modal" id="appModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modalTitle">App Details</h2>
-                <button class="modal-close" onclick="closeModal()">✕</button>
-            </div>
-            <div class="modal-body" id="modalBody"></div>
-        </div>
-    </div>
+  // block pinch-zoom weirdness on iOS Safari
+  document.addEventListener('gesturestart', e => e.preventDefault());
 
-    <nav class="bottom-nav">
-        <button class="nav-item" onclick="switchPage('aboutPage')">
-            <span>Über uns</span>
-        </button>
-        <button class="nav-item" onclick="switchPage('homePage')">
-            <span>Start</span>
-        </button>
-        <button class="nav-item" onclick="switchPage('guidePage')">
-                
-                Ratgeber
-            </button>
-            <button class="nav-item" onclick="switchPage('communityPage')">
-            <span>Community</span>
-        </button>
-    </nav>
-
-    <script>
-        // Extended app data with more categories and links
-        const apps = [
-            // Umwelt & Nachhaltigkeit
-            { name: "Too Good To Go", category: "umwelt", description: "Reduziert Lebensmittelverschwendung durch vergünstigten Verkauf überschüssiger Lebensmittel.", link: "https://www.toogoodtogo.com/de" },
-            { name: "Ecosia", category: "umwelt", description: "Suchmaschine, die mit Werbeeinnahmen Bäume pflanzt und Aufforstungsprojekte finanziert.", link: "https://www.ecosia.org/" },
-            { name: "Vinted", category: "umwelt", description: "Plattform für Second-Hand-Kleidung, wirkt Fast Fashion entgegen.", link: "https://www.vinted.de/" },
-            { name: "Codecheck", category: "umwelt", description: "Informiert über Inhaltsstoffe von Produkten für nachhaltigere Kaufentscheidungen.", link: "https://www.codecheck.info/" },
-            { name: "Forest", category: "umwelt", description: "Motiviert zur Konzentration durch virtuelle Baumpflanzungen, die echte Projekte finanzieren.", link: "https://www.forestapp.cc/" },
-            { name: "OroVerde", category: "umwelt", description: "Unterstützt Regenwaldschutzprojekte weltweit.", link: "https://www.regenwald-schuetzen.org/" },
-            { name: "NABU", category: "umwelt", description: "Naturschutzbund Deutschland mit vielen Mitmach-Aktionen.", link: "https://www.nabu.de/" },
-            { name: "WWF", category: "umwelt", description: "World Wide Fund For Nature mit Artenschutzprojekten weltweit.", link: "https://www.wwf.de/" },
-            { name: "BUND", category: "umwelt", description: "Bund für Umwelt und Naturschutz Deutschland.", link: "https://www.bund.net/" },
-            { name: "greenstart", category: "umwelt", description: "Greenstart ist die Förderinitiative des Klimaschutzministeriums für grüne Startups in Österreich.", link: "https://www.greenstart.at/" },
-
-            // Soziales Engagement
-            { name: "GoVolunteer", category: "sozial", description: "Vernetzt Freiwillige mit gemeinnützigen Projekten in ihrer Nähe.", link: "https://govolunteer.com/" },
-            { name: "letsact", category: "sozial", description: "Ermöglicht flexible Suche nach ehrenamtlichen Tätigkeiten nach Interessen und Ort.", link: "https://letsact.de/" },
-            { name: "FlexHero", category: "sozial", description: "App für flexible Freiwilligenarbeit, macht Heldentaten in der Stadt möglich.", link: "https://www.flexhero.com/" },
-            { name: "mima", category: "sozial", description: "Bringt Freiwillige und Organisationen in Österreich zusammen.", link: "https://mima.at/" },
-            { name: "Caritas", category: "sozial", description: "Hilfsorganisation mit vielen ehrenamtlichen Möglichkeiten.", link: "https://www.caritas.de/" },
-            { name: "Diakonie", category: "sozial", description: "Sozialer Hilfsdienst der evangelischen Kirche.", link: "https://www.diakonie.de/" },
-
-            // Bildung
-            { name: "Duolingo", category: "bildung", description: "Sprachenlernen für alle mit spielerischen Elementen.", link: "https://www.duolingo.com/" },
-            { name: "Serlo", category: "bildung", description: "Kostenlose Lernplattform mit Erklärungen und Übungen.", link: "https://de.serlo.org/" },
-            { name: "Bildungsspender", category: "bildung", description: "Spenden für Bildungseinrichtungen durch Online-Einkäufe.", link: "https://www.bildungsspender.de/" },
-            { name: "Stiftung Lesen", category: "bildung", description: "Fördert Lesekompetenz und Lesefreude.", link: "https://www.stiftunglesen.de/" },
-            { name: "Code.org", category: "bildung", description: "Bietet kostenlose Programmierkurse für alle Altersgruppen.", link: "https://code.org/" },
-            { name: "OpenLearn", category: "bildung", description: "Kostenlose Lernmaterialien der Open University.", link: "https://www.open.edu/openlearn/" },
-
-            // Gesundheit
-            { name: "Krisenchat", category: "gesundheit", description: "Kostenloser Krisenchat für Kinder und Jugendliche.", link: "https://krisenchat.de/" },
-            { name: "Nummer gegen Kummer", category: "gesundheit", description: "Kostenlose Beratung für Kinder, Jugendliche und Eltern.", link: "https://www.nummergegenkummer.de/" },
-            { name: "Telefonseelsorge", category: "gesundheit", description: "Kostenlose und anonyme Beratung per Telefon oder Chat.", link: "https://www.telefonseelsorge.de/" },
-            { name: "Weisse Liste", category: "gesundheit", description: "Hilft bei der Suche nach guten Ärzten und Krankenhäusern.", link: "https://www.weisse-liste.de/" },
-
-            // Tierschutz
-            { name: "Animal Equality", category: "tiere", description: "Internationale Organisation gegen Tierquälerei.", link: "https://animalequality.de/" },
-            { name: "ProVeg", category: "tiere", description: "Fördert pflanzenbasierte Ernährung für Tier- und Umweltschutz.", link: "https://proveg.com/de/" },
-            { name: "TASSO", category: "tiere", description: "Haustierregistrierung für vermisste Tiere.", link: "https://www.tasso.net/" },
-            { name: "Animals Angels", category: "tiere", description: "Setzt sich für Tiere im Transport ein.", link: "https://www.animals-angels.de/" },
-            { name: "Wildtierhilfe", category: "tiere", description: "Hilfe für verletzte Wildtiere.", link: "https://www.wildtierhilfe.org/" },
-
-            // Crowdsourcing
-            { name: "Frag Ingrid", category: "crowd", description: "Crowdsourcing für Menschen mit Lebensmittelunverträglichkeiten.", link: "https://frag-ingrid.de/" },
-            { name: "OpenStreetMap", category: "crowd", description: "Kollaboratives Projekt zur Erstellung freier geografischer Daten.", link: "https://www.openstreetmap.org/" },
-            { name: "Zooniverse", category: "crowd", description: "Citizen Science: Freiwillige unterstützen wissenschaftliche Forschungsprojekte.", link: "https://www.zooniverse.org/" },
-            { name: "Naturgucker", category: "crowd", description: "Laien sammeln wissenschaftliche Daten zur Artenvielfalt.", link: "https://www.naturgucker.de/" },
-            { name: "iNaturalist", category: "crowd", description: "Plattform zur Erfassung von Naturbeobachtungen.", link: "https://www.inaturalist.org/" },
-            { name: "Wikipedia", category: "crowd", description: "Freie Enzyklopädie, die von Freiwilligen erstellt wird.", link: "https://www.wikipedia.org/" },
-
-            // Spenden
-            { name: "ShareTheMeal", category: "spenden", description: "UN-Initiative: Spende mit einem Fingertipp eine Mahlzeit für Menschen in Not.", link: "https://sharethemeal.org/" },
-            { name: "betterplace.org", category: "spenden", description: "Ermöglicht Spenden für diverse soziale Projekte in Deutschland.", link: "https://www.betterplace.org/" },
-            { name: "FreeRice", category: "spenden", description: "Spielerische App: Beantworte Quizfragen und spende Reis.", link: "https://freerice.com/" },
-            { name: "Aktion Mensch", category: "spenden", description: "Unterstützt Menschen mit und ohne Behinderung durch Losverkauf.", link: "https://www.aktion-mensch.de/" },
-            { name: "Brot für die Welt", category: "spenden", description: "Hilfswerk für Entwicklungszusammenarbeit.", link: "https://www.brot-fuer-die-welt.de/" },
-            { name: "Misereor", category: "spenden", description: "Hilfswerk für Entwicklungszusammenarbeit.", link: "https://www.misereor.de/" },
-            { name: "UNICEF", category: "spenden", description: "Kinderhilfswerk der Vereinten Nationen.", link: "https://www.unicef.de/" },
-            { name: "Ärzte ohne Grenzen", category: "spenden", description: "Hilfsorganisation für medizinische Nothilfe.", link: "https://www.aerzte-ohne-grenzen.de/" }
-        ];
-
-        // Real community resources data - focusing on Austrian platforms
-        const communityResources = [
-            {
-                title: "Nachbarschaftshilfe Österreich",
-                description: "Offizielle Plattform für Nachbarschaftshilfe in Österreich. Finde Hilfe in deiner Nähe oder biete Unterstützung an.",
-                link: "https://www.nachbarschaft.net/",
-                type: "platform"
-            },
-            {
-                title: "Willhaben Tausch & Verschenken",
-                description: "Größte Tausch- und Verschenkplattform Österreichs. Perfekt für nachhaltigen Konsum und Gemeinschaft.",
-                link: "https://www.willhaben.at",
-                type: "marketplace"
-            },
-            {
-                title: "Umweltberatung Österreich",
-                description: "Kostenlose Beratung zu Umweltthemen, Nachhaltigkeit und Gemeinschaftsprojekten in deiner Region.",
-                link: "https://www.umweltberatung.at",
-                type: "education"
-            },
-            {
-                title: "Sozialmärkte Österreich",
-                description: "Verband österreichischer Sozialmärkte. Hier findest du günstige Lebensmittel und unterstützt soziale Projekte.",
-                link: "https://www.sozialmarkt.at",
-                type: "marketplace"
-            },
-            {
-                title: "Foodsharing Österreich",
-                description: "Initiative gegen Lebensmittelverschwendung. Rette Lebensmittel und teile sie in deiner Community.",
-                link: "https://www.foodsharing.at",
-                type: "community"
-            },
-            {
-                title: "Reparatur Netzwerk Österreich",
-                description: "Finde Reparatur-Treffs in deiner Nähe. Gemeinsam reparieren statt wegwerfen.",
-                link: "https://www.repanet.at",
-                type: "community"
-            }
-        ];
-
-        let currentFilter = 'alle';
-
-        function renderApps(appsToRender = apps) {
-            const grid = document.getElementById('appGrid');
-            grid.innerHTML = '';
-
-            appsToRender.forEach(app => {
-                const card = document.createElement('div');
-                card.className = 'app-card';
-                card.onclick = () => openModal(app);
-
-                const categoryNames = {
-                    'umwelt': 'Umweltschutz',
-                    'sozial': 'Soziales',
-                    'bildung': 'Bildung',
-                    'gesundheit': 'Gesundheit',
-                    'tiere': 'Tierschutz',
-                    'crowd': 'Crowdsourcing',
-                    'spenden': 'Spenden'
-                };
-
-                card.innerHTML = `
-                    <div class="app-header">
-                        <div>
-                            <div class="app-name">${app.name}</div>
-                            <span class="app-category">${categoryNames[app.category]}</span>
-                        </div>
-                    </div>
-                    <div class="app-description">${app.description}</div>
-                    <div class="app-footer">
-                        <a href="${app.link}" class="app-link" onclick="event.stopPropagation()">Mehr erfahren →</a>
-                    </div>
-                `;
-
-                grid.appendChild(card);
-            });
-
-            document.getElementById('appCount').textContent = `${appsToRender.length}+`;
-        }
-
-        function renderCommunityResources() {
-            const container = document.getElementById('forumPosts');
-            container.innerHTML = '';
-
-            communityResources.forEach(resource => {
-                const resourceElement = document.createElement('div');
-                resourceElement.className = 'forum-post';
-
-                resourceElement.innerHTML = `
-                    <div class="post-header">
-                        <div class="post-author">Community Resource</div>
-                    </div>
-                    <h3 class="post-title">${resource.title}</h3>
-                    <div class="post-content">${resource.description}</div>
-                    <div class="post-actions">
-                        <a href="${resource.link}" class="btn btn-primary" target="_blank" style="text-decoration: none; color: white;">Zur Plattform</a>
-                    </div>
-                `;
-
-                container.appendChild(resourceElement);
-            });
-        }
-
-        function filterApps(category) {
-            currentFilter = category;
-
-            document.querySelectorAll('.filter-chip').forEach(chip => {
-                chip.classList.remove('active');
-            });
-            document.querySelectorAll(`[data-category="${category}"]`).forEach(chip => {
-                chip.classList.add('active');
-            });
-
-            if (category === 'alle') {
-                renderApps(apps);
-            } else {
-                const filtered = apps.filter(app => app.category === category);
-                renderApps(filtered);
-            }
-        }
-
-        function searchApps() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-
-            if (!query) {
-                filterApps(currentFilter);
-                return;
-            }
-
-            let filtered = apps.filter(app =>
-                app.name.toLowerCase().includes(query) ||
-                app.description.toLowerCase().includes(query)
-            );
-
-            if (currentFilter !== 'alle') {
-                filtered = filtered.filter(app => app.category === currentFilter);
-            }
-
-            renderApps(filtered);
-        }
-
-        document.getElementById('searchInput').addEventListener('keyup', function (e) {
-            if (e.key === 'Enter') searchApps();
-        });
-
-        function openModal(app) {
-            const modal = document.getElementById('appModal');
-            const title = document.getElementById('modalTitle');
-            const body = document.getElementById('modalBody');
-
-            const categoryNames = {
-                'umwelt': 'Umweltschutz',
-                'sozial': 'Soziales',
-                'bildung': 'Bildung',
-                'gesundheit': 'Gesundheit',
-                'tiere': 'Tierschutz',
-                'crowd': 'Crowdsourcing',
-                'spenden': 'Spenden'
-            };
-
-            title.textContent = app.name;
-            body.innerHTML = `
-                <span class="app-category">${categoryNames[app.category]}</span>
-                <h3>Beschreibung</h3>
-                <p>${app.description}</p>
-                <h3>Wie kann ich helfen?</h3>
-                <p>Besuche die offizielle Website oder lade die App herunter, um direkt aktiv zu werden.</p>
-                <div style="margin-top: 2rem;">
-                    <a href="${app.link}" class="btn btn-primary" style="display: inline-block; text-decoration: none; color: white;">Zur App</a>
-                </div>
-            `;
-
-            modal.classList.add('active');
-        }
-
-        function closeModal() {
-            document.getElementById('appModal').classList.remove('active');
-        }
-
-        document.getElementById('appModal').addEventListener('click', function (e) {
-            if (e.target === this) closeModal();
-        });
-
-        function switchPage(pageId) {
-            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-
-            // Community-Seite neu rendern wenn sie aktiviert wird
-            if (pageId === 'communityPage') {
-                renderCommunityResources();
-            }
-
-            window.scrollTo(0, 0);
-        }
-
-        // Initialize the page
-        renderApps();
-
-        // Add scroll hint functionality
-        function checkScrollable() {
-            const container = document.getElementById('filtersContainer');
-            const filters = document.getElementById('filterContainer');
-
-            if (container && filters) {
-                if (filters.scrollWidth > container.clientWidth) {
-                    container.classList.add('scrollable');
-                } else {
-                    container.classList.remove('scrollable');
-                }
-            }
-        }
-
-        // Check on load and resize
-        window.addEventListener('load', checkScrollable);
-        window.addEventListener('resize', checkScrollable);
-    </script>
+  updateCounter();
+</script>
 </body>
-
 </html>
