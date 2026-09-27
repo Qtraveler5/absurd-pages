@@ -2,321 +2,463 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#0a0a0a">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#050505">
 <title>Somera_Studio — ABSURD PAGES</title>
 <style>
-  :root {
-    --bg: #0a0a0a;
-    --fg: #f2f2f2;
-    --dim: #6b6b6b;
-    --accent: #ffffff;
-  }
+:root {
+--bg: #050505;
+--fg: #f5f5f5;
+--dim: #666;
+}
 
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-  }
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+-webkit-tap-highlight-color: transparent;
+}
 
-  html, body {
-    height: 100%;
-    overflow: hidden;
-  }
+html, body {
+height: 100%;
+overflow: hidden;
+overscroll-behavior: none;
+}
 
-  body {
-    background: var(--bg);
-    color: var(--fg);
-    font-family: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    overscroll-behavior: none;
-    user-select: none;
-    -webkit-user-select: none;
-  }
+body {
+background: var(--bg);
+color: var(--fg);
+font-family: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+display: flex;
+flex-direction: column;
+position: relative;
+user-select: none;
+-webkit-user-select: none;
+}
 
-  /* subtle vignette / grain feel */
-  body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(0,0,0,0.55) 100%);
-  }
+/* ---------- animated aurora orbs ---------- */
+.orb {
+position: fixed;
+border-radius: 50%;
+filter: blur(80px);
+opacity: 0.35;
+pointer-events: none;
+will-change: transform, margin;
+z-index: 0;
+}
+.orb-1 {
+width: 60vmax; height: 60vmax;
+background: radial-gradient(circle, #ff3d81, transparent 70%);
+top: -20vmax; left: -20vmax;
+animation: float1 22s ease-in-out infinite;
+}
+.orb-2 {
+width: 50vmax; height: 50vmax;
+background: radial-gradient(circle, #3d7bff, transparent 70%);
+bottom: -20vmax; right: -15vmax;
+animation: float2 26s ease-in-out infinite;
+}
+.orb-3 {
+width: 45vmax; height: 45vmax;
+background: radial-gradient(circle, #a855f7, transparent 70%);
+top: 40%; left: 50%;
+animation: float3 30s ease-in-out infinite;
+}
 
-  header {
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 18px 20px;
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-    z-index: 5;
-  }
+@keyframes float1 {
+0%, 100% { transform: translate(0, 0) scale(1); }
+50% { transform: translate(15vmax, 10vmax) scale(1.15); }
+}
+@keyframes float2 {
+0%, 100% { transform: translate(0, 0) scale(1); }
+50% { transform: translate(-15vmax, -10vmax) scale(1.1); }
+}
+@keyframes float3 {
+0%, 100% { transform: translate(-50%, -50%) scale(1); }
+50% { transform: translate(-40%, -60%) scale(1.2); }
+}
 
-  .brand {
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    color: var(--fg);
-  }
+/* ---------- grain overlay ---------- */
+body::before {
+content: "";
+position: fixed;
+inset: 0;
+background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.35 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.6'/></svg>");
+opacity: 0.35;
+pointer-events: none;
+z-index: 1;
+mix-blend-mode: overlay;
+}
 
-  .brand .underscore {
-    color: var(--dim);
-    animation: blink 1.15s steps(1) infinite;
-  }
+/* ---------- vignette ---------- */
+body::after {
+content: "";
+position: fixed;
+inset: 0;
+background: radial-gradient(circle at 50% 50%, transparent 30%, rgba(0,0,0,0.78) 100%);
+pointer-events: none;
+z-index: 2;
+}
 
-  @keyframes blink {
-    0%, 49% { opacity: 1; }
-    50%, 100% { opacity: 0; }
-  }
+/* ---------- header ---------- */
+header {
+position: absolute;
+top: 0; left: 0;
+padding: max(18px, env(safe-area-inset-top)) 22px 18px 22px;
+display: flex;
+align-items: baseline;
+gap: 12px;
+z-index: 10;
+animation: fadeDown 0.9s ease both;
+}
 
-  .sub {
-    font-size: 10px;
-    letter-spacing: 0.22em;
-    color: var(--dim);
-    text-transform: uppercase;
-  }
+.brand {
+font-size: 14px;
+font-weight: 600;
+letter-spacing: 0.08em;
+color: var(--fg);
+text-shadow: 0 0 20px rgba(255,255,255,0.15);
+}
+.brand .underscore {
+color: var(--dim);
+animation: blink 1.15s steps(1) infinite;
+}
+@keyframes blink {
+0%, 49% { opacity: 1; }
+50%, 100% { opacity: 0; }
+}
 
-  main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    z-index: 2;
-  }
+.sub {
+font-size: 10px;
+letter-spacing: 0.24em;
+color: var(--dim);
+text-transform: uppercase;
+}
 
-  #surprise {
-    position: relative;
-    appearance: none;
-    border: 1.5px solid rgba(255,255,255,0.85);
-    background: transparent;
-    color: var(--fg);
-    font-family: inherit;
-    font-size: clamp(17px, 5.2vw, 22px);
-    letter-spacing: 0.06em;
-    padding: 22px 42px;
-    border-radius: 999px;
-    cursor: pointer;
-    transition: transform 0.12s ease, background 0.18s ease, color 0.18s ease, box-shadow 0.25s ease;
-    box-shadow: 0 0 0 rgba(255,255,255,0);
-    overflow: hidden;
-  }
+@keyframes fadeDown {
+from { opacity: 0; transform: translateY(-10px); }
+to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(20px); }
+to { opacity: 1; transform: translateY(0); }
+}
 
-  #surprise:active {
-    transform: scale(0.94);
-    background: rgba(255,255,255,0.08);
-  }
+/* ---------- main / button ---------- */
+main {
+flex: 1;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+padding: 24px;
+position: relative;
+z-index: 5;
+}
 
-  @media (hover: hover) {
-    #surprise:hover {
-      background: #fff;
-      color: #0a0a0a;
-      box-shadow: 0 0 40px rgba(255,255,255,0.25);
-    }
-  }
+.btn-wrap {
+position: relative;
+animation: fadeUp 1.1s 0.25s ease both;
+}
 
-  #surprise.loading {
-    pointer-events: none;
-    opacity: 0.55;
-    animation: pulse 0.5s ease infinite alternate;
-  }
+/* pulsing aura rings behind the button */
+.aura {
+position: absolute;
+inset: -30px;
+border-radius: 999px;
+border: 1px solid rgba(255,255,255,0.18);
+pointer-events: none;
+animation: auraPulse 3.2s ease-out infinite;
+}
+.aura:nth-child(2) { animation-delay: 1.1s; }
+.aura:nth-child(3) { animation-delay: 2.2s; }
 
-  @keyframes pulse {
-    from { transform: scale(1); }
-    to   { transform: scale(0.96); }
-  }
+@keyframes auraPulse {
+0% { transform: scale(0.7); opacity: 0; }
+20% { opacity: 0.9; }
+100% { transform: scale(1.6); opacity: 0; }
+}
 
-  footer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 16px 20px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 10px;
-    letter-spacing: 0.16em;
-    color: var(--dim);
-    text-transform: uppercase;
-    z-index: 5;
-  }
+#surprise {
+position: relative;
+appearance: none;
+border: 1px solid rgba(255,255,255,0.85);
+background: rgba(255,255,255,0.03);
+backdrop-filter: blur(10px);
+-webkit-backdrop-filter: blur(10px);
+color: var(--fg);
+font-family: inherit;
+font-size: clamp(17px, 5vw, 22px);
+font-weight: 500;
+letter-spacing: 0.06em;
+padding: 22px 46px;
+border-radius: 999px;
+cursor: pointer;
+transition: transform 0.14s ease, background 0.25s ease,
+color 0.25s ease, box-shadow 0.3s ease;
+box-shadow:
+0 0 40px rgba(255,255,255,0.08),
+0 0 120px rgba(160,120,255,0.10),
+inset 0 0 20px rgba(255,255,255,0.02);
+z-index: 2;
+}
+#surprise:active {
+transform: scale(0.94);
+background: rgba(255,255,255,0.12);
+}
 
-  #counter {
-    opacity: 0.7;
-  }
+@media (hover: hover) {
+#surprise:hover {
+background: #fff;
+color: #0a0a0a;
+box-shadow:
+0 0 60px rgba(255,255,255,0.35),
+0 0 140px rgba(160,120,255,0.30);
+}
+}
 
-  /* little pop of the last chosen title */
-  #toast {
-    position: absolute;
-    left: 50%;
-    bottom: 64px;
-    transform: translate(-50%, 12px);
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    color: var(--dim);
-    opacity: 0;
-    transition: opacity 0.25s ease, transform 0.25s ease;
-    text-align: center;
-    max-width: 80vw;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    pointer-events: none;
-  }
+#surprise.loading {
+pointer-events: none;
+animation: btnLoad 0.4s ease infinite alternate;
+}
+@keyframes btnLoad {
+from { transform: scale(1); opacity: 0.75; }
+to { transform: scale(0.96); opacity: 0.5; }
+}
 
-  #toast.show {
-    opacity: 1;
-    transform: translate(-50%, 0);
-  }
+/* ---------- toast ---------- */
+#toast {
+position: absolute;
+left: 50%;
+bottom: 26%;
+transform: translate(-50%, 12px);
+font-size: 11px;
+letter-spacing: 0.18em;
+color: rgba(255,255,255,0.72);
+opacity: 0;
+transition: opacity 0.3s ease, transform 0.3s ease;
+text-align: center;
+max-width: 82vw;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+pointer-events: none;
+z-index: 6;
+text-transform: uppercase;
+}
+#toast.show {
+opacity: 1;
+transform: translate(-50%, 0);
+}
 
-  /* flash on selection */
-  .flash {
-    animation: flash 0.35s ease;
-  }
+/* ---------- footer ---------- */
+footer {
+position: absolute;
+bottom: 0; left: 0; right: 0;
+padding: 16px 22px max(20px, env(safe-area-inset-bottom)) 22px;
+display: flex;
+justify-content: flex-end;
+align-items: center;
+font-size: 10px;
+letter-spacing: 0.22em;
+color: var(--dim);
+text-transform: uppercase;
+z-index: 10;
+animation: fadeUp 1.1s 0.45s ease both;
+}
 
-  @keyframes flash {
-    0%   { background: #0a0a0a; }
-    20%  { background: #1a1a1a; }
-    100% { background: #0a0a0a; }
-  }
+/* ---------- screen flash on select ---------- */
+.flash { animation: flash 0.4s ease; }
+@keyframes flash {
+0% { background: #050505; }
+25% { background: #141414; }
+100% { background: #050505; }
+}
 </style>
 </head>
 <body>
 
-  <header>
-    <span class="brand">Somera<span class="underscore">_</span>Studio</span>
-    <span class="sub">Absurd Pages</span>
-  </header>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
 
-  <main>
-    <button id="surprise" aria-label="Open a random absurd page">Suprise me!</button>
-  </main>
+<header>
+<span class="brand">Somera<span class="underscore">_</span>Studio</span>
+<span class="sub">Absurd Pages</span>
+</header>
 
-  <div id="toast"></div>
+<main>
+<div class="btn-wrap">
+<div class="aura"></div>
+<div class="aura"></div>
+<div class="aura"></div>
+<button id="surprise" aria-label="Open a random absurd page">Suprise me!</button>
+</div>
+</main>
 
-  <footer>
-    <span id="counter">0 / 43</span>
-    <span>tap at your own risk</span>
-  </footer>
+<div id="toast"></div>
+
+<footer>
+<span>tap at your own risk</span>
+</footer>
 
 <script>
-  const PAGES = [
-    { t: "Digital Trip",              u: "https://htdt.github.io/digital_trip/" },
-    { t: "Harmonics",                 u: "https://musiclab.chromeexperiments.com/Harmonics/" },
-    { t: "Kim Jong Il Looking At Things", u: "https://kimjongillookingatthings.tumblr.com/" },
-    { t: "Choir",                     u: "https://www.adultswim.com/etcetera/choir" },
-    { t: "Elastic Man",               u: "https://www.adultswim.com/etcetera/elastic-man" },
-    { t: "Quick, Draw!",              u: "https://quickdraw.withgoogle.com/" },
-    { t: "Absurd Trolley Problems",   u: "https://neal.fun/absurd-trolley-problems/" },
-    { t: "100,000 Stars",             u: "https://stars.chromeexperiments.com/" },
-    { t: "Pale Blue",                 u: "https://paleblue.news/?shem=aimgspe" },
-    { t: "Shape Reaction",            u: "https://retryables.com/shape-reaction/?shem=aimgspe" },
-    { t: "Pug in a Rug",              u: "https://puginarug.com/?shem=aimgspe" },
-    { t: "Perfect Circle",            u: "https://neal.fun/perfect-circle/?shem=aimgspe" },
-    { t: "Sleep Animal",              u: "https://vole.wtf/sleep-animal/?shem=aimgspe" },
-    { t: "Bouncy Balls",              u: "https://bouncyballs.org/?shem=aimgspe" },
-    { t: "Rotating Sandwiches",       u: "https://rotatingsandwiches.com/?shem=aimgspe" },
-    { t: "Cat Trap",                  u: "https://llerrah.com/cattrap.htm?shem=aimgspe" },
-    { t: "Broken Self",               u: "https://www.brokenself.com/?shem=aimgspe" },
-    { t: "Spectrogram",               u: "https://musiclab.chromeexperiments.com/Spectrogram/?shem=aimgspe" },
-    { t: "InspiroBot",                u: "https://inspirobot.me/?shem=aimgspe" },
-    { t: "Zoomquilt 2",               u: "https://zoomquilt2.com/?shem=aimgspe" },
-    { t: "Rainy Mood",                u: "https://www.rainymood.com/?shem=aimgspe" },
-    { t: "Blank Windows",             u: "https://blankwindows.com/?shem=aimgspe" },
-    { t: "2020 Game",                 u: "https://2020game.io/?shem=aimgspe" },
-    { t: "Virtual Drumming",          u: "https://www.virtualdrumming.com/drums/drums-app-game-android-ios/drums-app-game-android-ios.html?shem=aimgspe" },
-    { t: "PlayPhrase",                u: "https://www.playphrase.me/?shem=aimgspe#/search?q=Nice+to+meet+you.&pos=2&language=en" },
-    { t: "Guess the Price",           u: "https://guesstheprice.net/" },
-    { t: "Helen Keller Simulator",    u: "https://helenkellersimulator.org/?shem=aimgspe" },
-    { t: "Bongo Cat",                 u: "https://bongo.cat/?shem=aimgspe" },
-    { t: "Keys",                      u: "https://keys.playables.net/?shem=aimgspe" },
-    { t: "Big Long Now",              u: "https://www.biglongnow.com/?shem=aimgspe" },
-    { t: "Shit Day",                  u: "https://shitday.de/?shem=aimgspe" },
-    { t: "The True Size Of",          u: "https://thetruesize.com/?shem=aimgspe#?borders=1~!MTYyNzAxNDA.MTUzMDc0Mg*MjYyOTI0MzY(MTMxMDg4NDI~!CONTIGUOUS_US*MTAwMjQwNzU.MjUwMjM1MTc(MTc1)MQ~!IN*NTI2NDA1MQ.Nzg2MzQyMQ)Mg~!CN*OTkyMTY5Nw.NzMxNDcwNQ(MjI1)Mw" },
-    { t: "Random Colour",             u: "https://randomcolour.com/" },
-    { t: "Iceberger",                 u: "https://joshdata.me/iceberger.html" },
-    { t: "Eutow",                     u: "https://demo.marpi.pl/archan/eutow/" },
-    { t: "White Trash",               u: "https://whitetrash.nl/" },
-    { t: "Trip to Mars",              u: "https://absurd.website/trip-to-mars/" },
-    { t: "Tree.fm",                   u: "https://tree.fm/forest/40" },
-    { t: "Nate Judge",                u: "https://www.natejudge.com/" },
-    { t: "Arpeggios",                 u: "https://musiclab.chromeexperiments.com/Arpeggios/" },
-    { t: "Yes No If",                 u: "https://yesnoif.com/" },
-    { t: "7 Billion World",           u: "https://www.7billionworld.com/" },
-    { t: "Self-Contained Glyphs",     u: "https://www.madsci.org/cgi-bin/lynn/jardin/SCG" }
-  ];
+const PAGES = [
+/* ---------- original set ---------- */
+{ t: "Digital Trip", u: "https://htdt.github.io/digital_trip/" },
+{ t: "Harmonics", u: "https://musiclab.chromeexperiments.com/Harmonics/" },
+{ t: "Kim Jong Il Looking At Things", u: "https://kimjongillookingatthings.tumblr.com/" },
+{ t: "Choir", u: "https://www.adultswim.com/etcetera/choir" },
+{ t: "Elastic Man", u: "https://www.adultswim.com/etcetera/elastic-man" },
+{ t: "Quick, Draw!", u: "https://quickdraw.withgoogle.com/" },
+{ t: "Absurd Trolley Problems", u: "https://neal.fun/absurd-trolley-problems/" },
+{ t: "100,000 Stars", u: "https://stars.chromeexperiments.com/" },
+{ t: "Pale Blue", u: "https://paleblue.news/?shem=aimgspe" },
+{ t: "Shape Reaction", u: "https://retryables.com/shape-reaction/?shem=aimgspe" },
+{ t: "Pug in a Rug", u: "https://puginarug.com/?shem=aimgspe" },
+{ t: "Perfect Circle", u: "https://neal.fun/perfect-circle/?shem=aimgspe" },
+{ t: "Sleep Animal", u: "https://vole.wtf/sleep-animal/?shem=aimgspe" },
+{ t: "Bouncy Balls", u: "https://bouncyballs.org/?shem=aimgspe" },
+{ t: "Rotating Sandwiches", u: "https://rotatingsandwiches.com/?shem=aimgspe" },
+{ t: "Cat Trap", u: "https://llerrah.com/cattrap.htm?shem=aimgspe" },
+{ t: "Broken Self", u: "https://www.brokenself.com/?shem=aimgspe" },
+{ t: "Spectrogram", u: "https://musiclab.chromeexperiments.com/Spectrogram/?shem=aimgspe" },
+{ t: "InspiroBot", u: "https://inspirobot.me/?shem=aimgspe" },
+{ t: "Zoomquilt 2", u: "https://zoomquilt2.com/?shem=aimgspe" },
+{ t: "Rainy Mood", u: "https://www.rainymood.com/?shem=aimgspe" },
+{ t: "Blank Windows", u: "https://blankwindows.com/?shem=aimgspe" },
+{ t: "2020 Game", u: "https://2020game.io/?shem=aimgspe" },
+{ t: "Virtual Drumming", u: "https://www.virtualdrumming.com/drums/drums-app-game-android-ios/drums-app-game-android-ios.html?shem=aimgspe" },
+{ t: "PlayPhrase", u: "https://www.playphrase.me/?shem=aimgspe#/search?q=Nice+to+meet+you.&pos=2&language=en" },
+{ t: "Guess the Price", u: "https://guesstheprice.net/" },
+{ t: "Helen Keller Simulator", u: "https://helenkellersimulator.org/?shem=aimgspe" },
+{ t: "Bongo Cat", u: "https://bongo.cat/?shem=aimgspe" },
+{ t: "Keys", u: "https://keys.playables.net/?shem=aimgspe" },
+{ t: "Big Long Now", u: "https://www.biglongnow.com/?shem=aimgspe" },
+{ t: "Shit Day", u: "https://shitday.de/?shem=aimgspe" },
+{ t: "The True Size Of", u: "https://thetruesize.com/?shem=aimgspe#?borders=1~!MTYyNzAxNDA.MTUzMDc0Mg*MjYyOTI0MzY(MTMxMDg4NDI~!CONTIGUOUS_US*MTAwMjQwNzU.MjUwMjM1MTc(MTc1)MQ~!IN*NTI2NDA1MQ.Nzg2MzQyMQ)Mg~!CN*OTkyMTY5Nw.NzMxNDcwNQ(MjI1)Mw" },
+{ t: "Random Colour", u: "https://randomcolour.com/" },
+{ t: "Iceberger", u: "https://joshdata.me/iceberger.html" },
+{ t: "Eutow", u: "https://demo.marpi.pl/archan/eutow/" },
+{ t: "White Trash", u: "https://whitetrash.nl/" },
+{ t: "Trip to Mars", u: "https://absurd.website/trip-to-mars/" },
+{ t: "Tree.fm", u: "https://tree.fm/forest/40" },
+{ t: "Nate Judge", u: "https://www.natejudge.com/" },
+{ t: "Arpeggios", u: "https://musiclab.chromeexperiments.com/Arpeggios/" },
+{ t: "Yes No If", u: "https://yesnoif.com/" },
+{ t: "7 Billion World", u: "https://www.7billionworld.com/" },
+{ t: "Self-Contained Glyphs", u: "https://www.madsci.org/cgi-bin/lynn/jardin/SCG" },
 
-  const btn     = document.getElementById('surprise');
-  const toast   = document.getElementById('toast');
-  const counter = document.getElementById('counter');
+/* ---------- new additions ---------- */
+{ t: "The Useless Web", u: "https://theuselessweb.com/" },
+{ t: "Staggering Beauty", u: "https://staggeringbeauty.com/" },
+{ t: "Pointer Pointer", u: "https://pointerpointer.com/" },
+{ t: "Koalas to the Max", u: "https://koalastothemax.com/" },
+{ t: "Falling Falling", u: "https://fallingfalling.com/" },
+{ t: "Cat Bounce", u: "https://catbounce.com/" },
+{ t: "Scream into the Void", u: "https://screamintothevoid.com/" },
+{ t: "Zoomquilt", u: "https://zoomquilt.org/" },
+{ t: "Corn Dog on a Stick", u: "https://corndoganastick.com/" },
+{ t: "Zombo.com", u: "https://zombo.com/" },
+{ t: "Hacker Typer", u: "https://hackertyper.net/" },
+{ t: "Windows 93", u: "https://windows93.net/" },
+{ t: "The Revolving Internet", u: "https://therevolvinginternet.com/" },
+{ t: "Is It Christmas?", u: "https://isitchristmas.com/" },
+{ t: "Procatinator", u: "https://procatinator.com/" },
+{ t: "Eel Slap!", u: "https://eelslap.com/" },
+{ t: "Paper Toilet", u: "https://papertoilet.com/" },
+{ t: "Don't Click It", u: "https://dontclick.it/" }
+];
 
-  const seen = new Set();
+const btn = document.getElementById('surprise');
+const toast = document.getElementById('toast');
+const seen = new Set();
 
-  function updateCounter() {
-    counter.textContent = seen.size + " / " + PAGES.length;
-  }
+function showToast(text) {
+toast.textContent = "→ " + text;
+toast.classList.add('show');
+clearTimeout(showToast._t);
+showToast._t = setTimeout(() => toast.classList.remove('show'), 1600);
+}
 
-  function showToast(text) {
-    toast.textContent = text;
-    toast.classList.add('show');
-    clearTimeout(showToast._t);
-    showToast._t = setTimeout(() => toast.classList.remove('show'), 1600);
-  }
+/* pick a random page — no repeats until every page has been seen once */
+function pickIndex() {
+const unseen = PAGES.map((_, i) => i).filter(i => !seen.has(i));
+if (unseen.length > 0) {
+return unseen[Math.floor(Math.random() * unseen.length)];
+}
+seen.clear();
+return Math.floor(Math.random() * PAGES.length);
+}
 
-  function pickIndex() {
-    // avoid immediate repeats, and prefer unseen pages
-    const unseen = PAGES.map((_, i) => i).filter(i => !seen.has(i));
+/* open in a new tab — anchor-based (most reliable on mobile) */
+function openUrl(url) {
+const a = document.createElement('a');
+a.href = url;
+a.target = '_blank';
+a.rel = 'noopener noreferrer';
+document.body.appendChild(a);
+a.click();
+document.body.removeChild(a);
+}
 
-    if (unseen.length > 0) {
-      return unseen[Math.floor(Math.random() * unseen.length)];
-    }
+btn.addEventListener('click', () => {
+const i = pickIndex();
+const page = PAGES[i];
 
-    // all seen → reset memory, pick anything
-    seen.clear();
-    return Math.floor(Math.random() * PAGES.length);
-  }
+seen.add(i);
+showToast(page.t);
 
-  function openUrl(url) {
-    // Anchor-based open is the most reliable on mobile (survives popup blockers)
-    const a = document.createElement('a');
-    a.href = url;
-    a.target = '_blank';
-    a.rel = 'noopener noreferrer';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  }
+btn.classList.add('loading');
+document.body.classList.add('flash');
 
-  btn.addEventListener('click', () => {
-    const i = pickIndex();
-    const page = PAGES[i];
+/* small delay so the toast + flash register before leaving the page */
+setTimeout(() => {
+openUrl(page.u);
+btn.classList.remove('loading');
+document.body.classList.remove('flash');
+}, 280);
+});
 
-    seen.add(i);
-    updateCounter();
-    showToast("→ " + page.t);
+/* block pinch-zoom weirdness on iOS */
+document.addEventListener('gesturestart', e => e.preventDefault());
 
-    btn.classList.add('loading');
-    document.body.classList.add('flash');
+/* ---------- subtle parallax on orbs ----------
+Uses margin-left / margin-top so it doesn't fight
+the existing transform animations of each orb. */
+const orbs = [
+document.querySelector('.orb-1'),
+document.querySelector('.orb-2'),
+document.querySelector('.orb-3')
+];
+let tx = 0, ty = 0, cx = 0, cy = 0;
 
-    // tiny delay so the toast/flash registers before leaving the page
-    setTimeout(() => {
-      openUrl(page.u);
-      btn.classList.remove('loading');
-      document.body.classList.remove('flash');
-    }, 260);
-  });
+function tick() {
+cx += (tx - cx) * 0.05;
+cy += (ty - cy) * 0.05;
+orbs.forEach((o, i) => {
+const depth = (i + 1) * 6;
+o.style.marginLeft = (cx * depth) + 'px';
+o.style.marginTop = (cy * depth) + 'px';
+});
+requestAnimationFrame(tick);
+}
+tick();
 
-  // block pinch-zoom weirdness on iOS Safari
-  document.addEventListener('gesturestart', e => e.preventDefault());
+/* desktop: follow pointer */
+if (window.matchMedia('(hover: hover)').matches) {
+window.addEventListener('mousemove', e => {
+tx = (e.clientX / window.innerWidth - 0.5) * 2;
+ty = (e.clientY / window.innerHeight - 0.5) * 2;
+});
+}
 
-  updateCounter();
+/* mobile: follow device tilt (gyroscope) */
+window.addEventListener('deviceorientation', e => {
+if (e.gamma == null || e.beta == null) return;
+tx = Math.max(-1, Math.min(1, e.gamma / 45));
+ty = Math.max(-1, Math.min(1, (e.beta - 45) / 45));
+});
 </script>
 </body>
 </html>
